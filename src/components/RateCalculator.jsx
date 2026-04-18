@@ -229,7 +229,7 @@ export default function RateCalculator() {
               </div>
             </div>
             <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Shipment Amount</label>
+              <label style={labelStyle}>Invoice Value</label>
               <div style={{ display: 'flex', border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden' }}>
                 <span style={{
                   display: 'flex', alignItems: 'center', padding: '0 10px',
