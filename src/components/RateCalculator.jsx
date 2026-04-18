@@ -165,7 +165,7 @@ export default function RateCalculator() {
                       type="number"
                       value={activeBox?.[dim]}
                       onChange={e => setBoxes(b => b.map(x => x.id === 1 ? { ...x, [dim]: e.target.value } : x))}
-                      style={{ ...inputStyle, width: 56, padding: '8px 8px', textAlign: 'center' }}
+                      style={{ ...inputStyle, width: 76, padding: '8px 8px', textAlign: 'center' }}
                     />
                   ))}
                   <div style={{
