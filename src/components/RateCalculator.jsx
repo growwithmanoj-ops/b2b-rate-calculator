@@ -28,6 +28,13 @@ export default function RateCalculator() {
   const [freight, setFreight] = useState('fod')
   const [dropOff, setDropOff] = useState('pickup')
   const [showBreakdown, setShowBreakdown] = useState(true)
+  const [appointmentDelivery, setAppointmentDelivery] = useState(false)
+
+  const APPOINTMENT_CHARGE = 200
+  const BASE_FREIGHT = 1190
+  const freightTotal = BASE_FREIGHT + (appointmentDelivery ? APPOINTMENT_CHARGE : 0)
+  const gst = +(freightTotal * 0.18).toFixed(2)
+  const grandTotal = +(freightTotal + gst).toFixed(2)
 
   const activeBox = boxes[0]
 
@@ -282,6 +289,34 @@ export default function RateCalculator() {
             </div>
           </div>
 
+          {/* Appointment Delivery toggle */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            marginTop: 16, padding: '14px 16px',
+            border: '1px solid #e5e7eb', borderRadius: 8, background: appointmentDelivery ? '#f0f0ff' : '#fff',
+          }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#374151' }}>Appointment Delivery</div>
+              <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
+                Schedule a specific delivery time (+₹{APPOINTMENT_CHARGE})
+              </div>
+            </div>
+            <button
+              onClick={() => setAppointmentDelivery(v => !v)}
+              style={{
+                width: 44, height: 24, borderRadius: 12, border: 'none', cursor: 'pointer',
+                background: appointmentDelivery ? '#4338ca' : '#d1d5db',
+                position: 'relative', transition: 'background 0.2s', flexShrink: 0,
+              }}
+            >
+              <span style={{
+                position: 'absolute', top: 3, left: appointmentDelivery ? 23 : 3,
+                width: 18, height: 18, borderRadius: '50%', background: '#fff',
+                transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+              }} />
+            </button>
+          </div>
+
           {/* Calculate button */}
           <button style={{
             marginTop: 20, width: '100%', padding: '11px 0',
@@ -302,7 +337,7 @@ export default function RateCalculator() {
             <div>
               <div style={{ fontSize: 15, color: '#374151', fontWeight: 500, marginBottom: 4 }}>Surface</div>
               <div style={{ fontSize: 32, fontWeight: 700, color: '#111827', lineHeight: 1 }}>
-                <span style={{ fontSize: 18, fontWeight: 600 }}>₹</span>1,404.2
+                <span style={{ fontSize: 18, fontWeight: 600 }}>₹</span>{grandTotal.toLocaleString('en-IN')}
               </div>
               <div style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>Delivery in 2 days</div>
             </div>
@@ -367,7 +402,7 @@ export default function RateCalculator() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
                   </svg>
                 </div>
-                <span style={{ fontSize: 14, fontWeight: 600, color: '#1f2937' }}>₹1,190.00</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: '#1f2937' }}>₹{freightTotal.toLocaleString('en-IN')}.00</span>
               </div>
 
               {/* Line items */}
@@ -376,6 +411,7 @@ export default function RateCalculator() {
                 { label: 'Fuel surcharges', amount: '₹90.00', tip: 'Applicable fuel surcharge for this route' },
                 { label: 'Insurance ROV', amount: '₹150.00', tip: 'Risk of Value insurance for your shipment' },
                 { label: 'Handling charges', amount: '₹100.00', tip: 'Charges for loading and unloading' },
+                ...(appointmentDelivery ? [{ label: 'Appointment charges', amount: `₹${APPOINTMENT_CHARGE}.00`, tip: 'Fee for scheduling a specific delivery appointment' }] : []),
               ].map(item => (
                 <div key={item.label} style={{
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -399,7 +435,7 @@ export default function RateCalculator() {
                   GST at 18%
                   <InfoIcon tip="Goods and Services Tax at 18% on freight charges" />
                 </span>
-                <span>₹214.20</span>
+                <span>₹{gst.toLocaleString('en-IN')}</span>
               </div>
             </>
           )}
