@@ -372,27 +372,33 @@ export default function RateCalculator() {
 
               {/* Line items */}
               {[
-                { label: 'Base freight charges', amount: '₹850.00' },
-                { label: 'Fuel surcharges', amount: '₹90.00' },
-                { label: 'Insurance ROV', amount: '₹150.00' },
-                { label: 'Handling charges', amount: '₹100.00' },
+                { label: 'Base freight charges', amount: '₹850.00', tip: 'Calculated based on shipment weight and route' },
+                { label: 'Fuel surcharges', amount: '₹90.00', tip: 'Applicable fuel surcharge for this route' },
+                { label: 'Insurance ROV', amount: '₹150.00', tip: 'Risk of Value insurance for your shipment' },
+                { label: 'Handling charges', amount: '₹100.00', tip: 'Charges for loading and unloading' },
               ].map(item => (
                 <div key={item.label} style={{
-                  display: 'flex', justifyContent: 'space-between',
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   fontSize: 13, color: '#6b7280', marginBottom: 10, paddingLeft: 8,
                 }}>
-                  <span>{item.label}</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    {item.label}
+                    <InfoIcon tip={item.tip} />
+                  </span>
                   <span style={{ color: '#374151' }}>{item.amount}</span>
                 </div>
               ))}
 
               {/* GST */}
               <div style={{
-                display: 'flex', justifyContent: 'space-between',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 fontSize: 14, fontWeight: 600, color: '#1f2937',
                 paddingTop: 10, borderTop: '1px solid #e5e7eb', marginTop: 4, marginBottom: 20,
               }}>
-                <span>GST at 18%</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  GST at 18%
+                  <InfoIcon tip="Goods and Services Tax at 18% on freight charges" />
+                </span>
                 <span>₹214.20</span>
               </div>
             </>
@@ -420,6 +426,31 @@ export default function RateCalculator() {
         </div>
       </div>
     </div>
+  )
+}
+
+function InfoIcon({ tip }) {
+  const [show, setShow] = useState(false)
+  return (
+    <span
+      style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      {show && (
+        <span style={{
+          position: 'absolute', bottom: '120%', left: '50%', transform: 'translateX(-50%)',
+          background: '#1f2937', color: '#fff', fontSize: 11, borderRadius: 5,
+          padding: '5px 8px', whiteSpace: 'nowrap', zIndex: 10, pointerEvents: 'none',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        }}>
+          {tip}
+        </span>
+      )}
+    </span>
   )
 }
 
