@@ -1,3 +1,150 @@
+/**
+ * CTA state reference:
+ *   coming_soon  – feature not yet available
+ *   activate     – ready to be activated
+ *   active       – live; shows Active + Configure split
+ *   in_progress  – activation is processing
+ *   incomplete   – activated but setup needs attention
+ */
+
+// ─── State tag pill ──────────────────────────────────────────────────────────
+
+const STATE_TAGS = {
+  coming_soon: { label: 'Coming Soon', bg: '#f3f4f6', color: '#6b7280', border: '#e5e7eb' },
+  in_progress: { label: 'In Progress', bg: '#fffbeb', color: '#b45309', border: '#fde68a' },
+  incomplete:  { label: 'Action Required', bg: '#fff7ed', color: '#c2410c', border: '#fed7aa' },
+}
+
+function StateTag({ state }) {
+  const tag = STATE_TAGS[state]
+  if (!tag) return null
+  return (
+    <span style={{
+      fontSize: 10, fontWeight: 700, letterSpacing: '0.05em',
+      padding: '3px 8px', borderRadius: 99,
+      background: tag.bg, color: tag.color, border: `1px solid ${tag.border}`,
+      whiteSpace: 'nowrap',
+    }}>
+      {tag.label.toUpperCase()}
+    </span>
+  )
+}
+
+// ─── Bottom CTA ──────────────────────────────────────────────────────────────
+
+function CardAction({ state }) {
+  // 1. Coming Soon — disabled, no interaction
+  if (state === 'coming_soon') {
+    return (
+      <div style={{
+        width: '100%', height: 44, display: 'flex', alignItems: 'center',
+        justifyContent: 'center', gap: 8,
+        background: '#f9fafb', border: '1px solid #e5e7eb',
+        borderRadius: 8, color: '#d1d5db', fontSize: 14, fontWeight: 500,
+        cursor: 'not-allowed', userSelect: 'none',
+      }}>
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Coming Soon
+      </div>
+    )
+  }
+
+  // 2. Activate Now — primary action
+  if (state === 'activate') {
+    return (
+      <button style={{
+        width: '100%', height: 44, display: 'flex', alignItems: 'center',
+        justifyContent: 'center', gap: 8,
+        background: '#111827', color: '#fff',
+        border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600,
+        cursor: 'pointer',
+      }}>
+        <svg width="14" height="14" fill="#fbbf24" viewBox="0 0 24 24">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </svg>
+        Activate Now
+      </button>
+    )
+  }
+
+  // 3. Active — split: green Active badge + indigo Configure link
+  if (state === 'active') {
+    return (
+      <div style={{
+        display: 'flex', height: 44,
+        border: '1px solid #bbf7d0', borderRadius: 8, overflow: 'hidden',
+      }}>
+        <div style={{
+          flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+          background: '#f0fdf4', color: '#16a34a', fontSize: 13, fontWeight: 600,
+        }}>
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          Active
+        </div>
+        <div style={{ width: 1, background: '#bbf7d0', flexShrink: 0 }} />
+        <div style={{
+          flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+          background: '#fff', color: '#4338ca', fontSize: 13, fontWeight: 500, cursor: 'pointer',
+        }}>
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Configure
+        </div>
+      </div>
+    )
+  }
+
+  // 4. Activation In Progress — amber, non-interactive
+  if (state === 'in_progress') {
+    return (
+      <div style={{
+        width: '100%', height: 44, display: 'flex', alignItems: 'center',
+        justifyContent: 'center', gap: 8,
+        background: '#fffbeb', border: '1px solid #fde68a',
+        borderRadius: 8, color: '#92400e', fontSize: 14, fontWeight: 500,
+        cursor: 'default',
+      }}>
+        <svg
+          width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="#d97706" strokeWidth="2.5" strokeLinecap="round"
+          style={{ animation: 'spin 1s linear infinite', flexShrink: 0 }}
+        >
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+        Activation In Progress
+      </div>
+    )
+  }
+
+  // 5. Incomplete — orange, actionable
+  if (state === 'incomplete') {
+    return (
+      <button style={{
+        width: '100%', height: 44, display: 'flex', alignItems: 'center',
+        justifyContent: 'center', gap: 8,
+        background: '#fff7ed', border: '1px solid #fed7aa',
+        borderRadius: 8, color: '#c2410c', fontSize: 14, fontWeight: 600,
+        cursor: 'pointer',
+      }}>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        Complete Setup
+      </button>
+    )
+  }
+
+  return null
+}
+
+// ─── Icon box ────────────────────────────────────────────────────────────────
+
 function ServiceIcon({ type, color, bg }) {
   const map = {
     shield: (
@@ -59,120 +206,78 @@ function ServiceIcon({ type, color, bg }) {
   }
   return (
     <div style={{
-      width: 46, height: 46, borderRadius: 10, background: bg,
-      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+      width: 46, height: 46, borderRadius: 10, background: bg, flexShrink: 0,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       {map[type]}
     </div>
   )
 }
 
-function CardAction({ type }) {
-  if (type === 'activate') {
-    return (
-      <button style={{
-        width: '100%', height: 44, background: '#111827', color: '#fff',
-        border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer',
-      }}>
-        Activate Now
-      </button>
-    )
-  }
-  if (type === 'configure') {
-    return (
-      <div style={{
-        width: '100%', height: 44, display: 'flex', alignItems: 'center',
-        justifyContent: 'center', gap: 6, border: '1px solid #e5e7eb',
-        borderRadius: 8, cursor: 'pointer', color: '#4338ca', fontSize: 14, fontWeight: 500,
-      }}>
-        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-        Configure
-      </div>
-    )
-  }
-  if (type === 'active') {
-    return (
-      <div style={{
-        width: '100%', height: 44, display: 'flex', alignItems: 'center',
-        justifyContent: 'center', gap: 6, background: '#f0fdf4',
-        borderRadius: 8, color: '#16a34a', fontSize: 14, fontWeight: 500,
-      }}>
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-        Active
-      </div>
-    )
-  }
-  if (type === 'deactivate') {
-    return (
-      <div style={{
-        width: '100%', height: 44, display: 'flex', alignItems: 'center',
-        justifyContent: 'center', background: '#fef2f2',
-        borderRadius: 8, color: '#dc2626', fontSize: 14, fontWeight: 500, cursor: 'pointer',
-      }}>
-        Deactivate
-      </div>
-    )
-  }
-  return null
-}
+// ─── Card ────────────────────────────────────────────────────────────────────
 
-function ServiceCard({ title, description, iconType, iconColor, iconBg, action }) {
+function ServiceCard({ title, description, iconType, iconColor, iconBg, state }) {
   return (
     <div style={{
       background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12,
-      padding: '20px 20px 16px', display: 'flex', flexDirection: 'column', gap: 0,
+      padding: '20px 20px 16px', display: 'flex', flexDirection: 'column',
     }}>
+      {/* Header row: title + state tag + icon */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-        <div style={{ fontSize: 15, fontWeight: 600, color: '#111827', paddingRight: 12 }}>{title}</div>
+        <div style={{ flex: 1, paddingRight: 12 }}>
+          <div style={{ fontSize: 15, fontWeight: 600, color: '#111827', marginBottom: 6 }}>{title}</div>
+          <StateTag state={state} />
+        </div>
         <ServiceIcon type={iconType} color={iconColor} bg={iconBg} />
       </div>
-      <div style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.55, flex: 1, marginBottom: 20 }}>{description}</div>
-      <CardAction type={action} />
+
+      {/* Description */}
+      <div style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.55, flex: 1, marginBottom: 20 }}>
+        {description}
+      </div>
+
+      {/* CTA */}
+      <CardAction state={state} />
     </div>
   )
 }
 
+// ─── Data ────────────────────────────────────────────────────────────────────
+
 const valueAdded = [
-  { title: 'Delhivery Protect', description: 'Secure your shipments against loss and damages.', iconType: 'shield', iconColor: '#7c3aed', iconBg: '#ede9fe', action: 'activate' },
-  { title: 'RTO Predictor', description: 'Save on potential losses by identifying high return risk orders before shipping.', iconType: 'rto', iconColor: '#ea580c', iconBg: '#fff7ed', action: 'configure' },
-  { title: 'Communications', description: 'Improve deliverability by informing your customers about real time shipment updates.', iconType: 'whatsapp', iconColor: '#25D366', iconBg: '#f0fdf4', action: 'configure' },
-  { title: 'Channel Integration', description: 'Pre-Integrated with Shopify and Woocommerce - your orders get auto-fetched by Delhivery', iconType: 'network', iconColor: '#7c3aed', iconBg: '#f5f3ff', action: 'configure' },
-  { title: 'Universal Search', description: 'Access everything you need from one search bar.', iconType: 'search', iconColor: '#111827', iconBg: '#f3f4f6', action: 'activate' },
-  { title: 'Delhivery AI Support', description: 'Get instant answers and resolve issues in real time.', iconType: 'diamond', iconColor: '#6b7280', iconBg: '#f9fafb', action: 'deactivate' },
+  { title: 'Delhivery Protect',   description: 'Secure your shipments against loss and damages.',                                                          iconType: 'shield',   iconColor: '#7c3aed', iconBg: '#ede9fe', state: 'activate'    },
+  { title: 'RTO Predictor',       description: 'Save on potential losses by identifying high return risk orders before shipping.',                          iconType: 'rto',      iconColor: '#ea580c', iconBg: '#fff7ed', state: 'active'      },
+  { title: 'Communications',      description: 'Improve deliverability by informing your customers about real time shipment updates.',                      iconType: 'whatsapp', iconColor: '#25D366', iconBg: '#f0fdf4', state: 'active'      },
+  { title: 'Channel Integration', description: 'Pre-Integrated with Shopify and Woocommerce - your orders get auto-fetched by Delhivery',                  iconType: 'network',  iconColor: '#7c3aed', iconBg: '#f5f3ff', state: 'in_progress' },
+  { title: 'Universal Search',    description: 'Access everything you need from one search bar.',                                                          iconType: 'search',   iconColor: '#9ca3af', iconBg: '#f3f4f6', state: 'coming_soon' },
+  { title: 'Delhivery AI Support',description: 'Get instant answers and resolve issues in real time.',                                                     iconType: 'diamond',  iconColor: '#6b7280', iconBg: '#f9fafb', state: 'active'      },
 ]
 
 const logistics = [
-  { title: 'Direct Intracity', description: 'Hire bikes or trucks to deliver goods', iconType: 'bike', iconColor: '#e11d48', iconBg: '#fff1f2', action: 'activate' },
-  { title: 'Domestic Parcel', description: 'Deliver faster to the remotest corners of India and get assured 2 day COD remittances.', iconType: 'cart', iconColor: '#2563eb', iconBg: '#eff6ff', action: 'active' },
-  { title: 'Domestic B2B Cargo', description: "Join India's fastest, most reliable Part Truck Load cargo service", iconType: 'truck', iconColor: '#e11d48', iconBg: '#fff1f2', action: 'active' },
-  { title: 'Cross Border Express', description: 'Take your business global. Ship your products to across 220+ countries.', iconType: 'globe', iconColor: '#7c3aed', iconBg: '#f5f3ff', action: 'activate' },
+  { title: 'Direct Intracity',    description: 'Hire bikes or trucks to deliver goods',                                                                    iconType: 'bike',     iconColor: '#e11d48', iconBg: '#fff1f2', state: 'activate'    },
+  { title: 'Domestic Parcel',     description: 'Deliver faster to the remotest corners of India and get assured 2 day COD remittances.',                   iconType: 'cart',     iconColor: '#2563eb', iconBg: '#eff6ff', state: 'active'      },
+  { title: 'Domestic B2B Cargo',  description: "Join India's fastest, most reliable Part Truck Load cargo service",                                        iconType: 'truck',    iconColor: '#e11d48', iconBg: '#fff1f2', state: 'active'      },
+  { title: 'Cross Border Express',description: 'Take your business global. Ship your products to across 220+ countries.',                                  iconType: 'globe',    iconColor: '#7c3aed', iconBg: '#f5f3ff', state: 'incomplete'  },
 ]
 
-export default function ServicesPage() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: 20,
-  }
+// ─── Page ────────────────────────────────────────────────────────────────────
 
+const grid = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }
+
+export default function ServicesPage() {
   return (
     <div>
       <div style={{ fontSize: 18, fontWeight: 700, color: '#111827', marginBottom: 20 }}>
         Value Added Services
       </div>
-      <div style={gridStyle}>
+      <div style={grid}>
         {valueAdded.map((s) => <ServiceCard key={s.title} {...s} />)}
       </div>
 
       <div style={{ fontSize: 18, fontWeight: 700, color: '#111827', margin: '40px 0 20px' }}>
         Logistics Services
       </div>
-      <div style={gridStyle}>
+      <div style={grid}>
         {logistics.map((s) => <ServiceCard key={s.title} {...s} />)}
       </div>
     </div>
