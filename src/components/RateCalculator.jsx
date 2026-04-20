@@ -332,6 +332,42 @@ export default function RateCalculator() {
           width: 340, background: '#fff', border: '1px solid #e5e7eb',
           borderRadius: 10, padding: 24, flexShrink: 0,
         }}>
+          {Number(totalWeight) < 20 ? (
+            /* Domestic Parcel suggestion */
+            <div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 17, fontWeight: 700, color: '#1e1b4b', marginBottom: 8 }}>
+                    Domestic Parcel
+                  </div>
+                  <div style={{ fontSize: 14, color: '#4b5563', lineHeight: 1.6 }}>
+                    Deliver faster to the remotest corners of India and get assured 2 day COD remittances.
+                  </div>
+                </div>
+                <div style={{
+                  width: 56, height: 56, background: '#eff1ff', borderRadius: 10,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginLeft: 12,
+                }}>
+                  <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#4338ca" strokeWidth="1.8">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div style={{ borderTop: '1px solid #e5e7eb', marginTop: 16, paddingTop: 14, background: '#f0fdf4', borderRadius: '0 0 8px 8px', margin: '16px -24px -24px', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#16a34a" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span style={{ fontSize: 14, fontWeight: 700, color: '#16a34a' }}>Activated</span>
+              </div>
+              <div style={{ marginTop: 16, padding: '10px 12px', background: '#fef9c3', border: '1px solid #fde68a', borderRadius: 8, fontSize: 12, color: '#92400e', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: 1 }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                B2B Surface is for shipments ≥ 20 kg. For smaller parcels, please use <strong style={{ marginLeft: 3 }}>Domestic Parcel</strong>.
+              </div>
+            </div>
+          ) : (
+            <>
           {/* Service header */}
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
             <div>
@@ -440,25 +476,31 @@ export default function RateCalculator() {
             </>
           )}
 
-          {/* Create Order */}
-          <button style={{
-            width: '100%', padding: '10px 0',
-            background: '#fff', color: '#1f2937',
-            border: '1.5px solid #d1d5db', borderRadius: 7,
-            fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: 14,
-          }}>
-            Create Order
-          </button>
+          {Number(totalWeight) >= 20 && (
+            <>
+              {/* Create Order */}
+              <button style={{
+                width: '100%', padding: '10px 0',
+                background: '#fff', color: '#1f2937',
+                border: '1.5px solid #d1d5db', borderRadius: 7,
+                fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: 14,
+              }}>
+                Create Order
+              </button>
 
-          {/* Disclaimer */}
-          <div style={{ display: 'flex', gap: 8, fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: 1 }}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>
-              This freight charge is subject to a change based on revisions, if any, in weight &amp; dimension measurements, delivery pin code and pricing file.
-            </span>
-          </div>
+              {/* Disclaimer */}
+              <div style={{ display: 'flex', gap: 8, fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: 1 }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>
+                  This freight charge is subject to a change based on revisions, if any, in weight &amp; dimension measurements, delivery pin code and pricing file.
+                </span>
+              </div>
+            </>
+          )}
+            </>
+          )}
         </div>
       </div>
     </div>
