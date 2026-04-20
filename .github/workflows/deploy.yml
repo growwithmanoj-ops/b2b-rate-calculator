@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - claude/clone-deploy-screenshot-X9i3g
+      - claude/clone-page-design-ziba2
   workflow_dispatch:
 
 permissions:
