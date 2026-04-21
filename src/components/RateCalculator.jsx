@@ -539,11 +539,6 @@ function DownloadMenu() {
     setOpen(false)
   }
 
-  const downloadRateCard = () => download('rate-card.ods', [
-    ['Route', 'Weight (kg)', 'Base Freight', 'Fuel Surcharge', 'Insurance ROV', 'Handling', 'Total (excl. GST)'],
-    ['641009 → 560025', '100', '850', '90', '150', '100', '1190'],
-  ])
-
   const downloadPincodes = () => download('serviceable-pincodes.csv', [
     ['Pincode', 'City', 'State', 'Serviceable'],
     ['641009', 'Coimbatore', 'Tamil Nadu', 'Yes'],
@@ -595,32 +590,6 @@ function DownloadMenu() {
             <div style={{ padding: '8px 14px 6px', fontSize: 11, fontWeight: 600, color: '#9ca3af', letterSpacing: '0.05em' }}>
               DOWNLOAD
             </div>
-
-            <button
-              onClick={downloadRateCard}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 10, width: '100%',
-                padding: '10px 14px', background: 'none', border: 'none',
-                cursor: 'pointer', fontSize: 13, color: '#374151', textAlign: 'left',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
-              onMouseLeave={e => e.currentTarget.style.background = 'none'}
-            >
-              <div style={{
-                width: 32, height: 32, borderRadius: 8, background: '#f0fdf4',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-              }}>
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#16a34a" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <div>
-                <div style={{ fontWeight: 500 }}>Rate Card</div>
-                <div style={{ fontSize: 11, color: '#9ca3af' }}>ODS spreadsheet</div>
-              </div>
-            </button>
-
-            <div style={{ height: 1, background: '#f3f4f6', margin: '0 14px' }} />
 
             <button
               onClick={downloadPincodes}
