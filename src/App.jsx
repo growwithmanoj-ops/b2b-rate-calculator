@@ -1,7 +1,7 @@
 import './index.css'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
-import ServicesPage from './components/ServicesPage'
+import RateCalculator from './components/RateCalculator'
 
 export default function App() {
   return (
@@ -10,7 +10,7 @@ export default function App() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <Header />
         <main style={{ flex: 1, overflowY: 'auto', padding: '24px 32px' }}>
-          <ServicesPage />
+          <RateCalculator />
         </main>
       </div>
     </div>

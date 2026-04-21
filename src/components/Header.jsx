@@ -10,33 +10,43 @@ export default function Header() {
       gap: 16,
       flexShrink: 0,
     }}>
-      {/* Page title */}
-      <div style={{ fontSize: 14, fontWeight: 600, color: '#374151', flexShrink: 0 }}>
-        Services
+      {/* Breadcrumb */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#6b7280', flexShrink: 0 }}>
+        <span style={{ color: '#9ca3af', cursor: 'pointer' }}>Information Center</span>
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ color: '#d1d5db' }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        <span style={{ color: '#374151', fontWeight: 500 }}>Serviceability &amp; Rate Calculator</span>
       </div>
 
       {/* Spacer */}
       <div style={{ flex: 1 }} />
 
-      {/* AWB Search */}
+      {/* LRN Search */}
       <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #d1d5db', borderRadius: 6, overflow: 'hidden', fontSize: 13 }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 4, padding: '0 10px', background: '#f9fafb',
           borderRight: '1px solid #d1d5db', height: 34, cursor: 'pointer', color: '#374151', fontWeight: 500,
         }}>
-          AWB
+          LRN
           <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
         <input
           type="text"
-          placeholder="Search multiple AWBs"
+          placeholder="Search upto 25 LRNs"
           style={{
             border: 'none', outline: 'none', padding: '0 12px', height: 34,
-            width: 200, fontSize: 13, color: '#6b7280', background: '#fff',
+            width: 180, fontSize: 13, color: '#6b7280', background: '#fff',
           }}
         />
+        <button style={{
+          height: 34, padding: '0 14px', background: '#312e81', color: '#fff',
+          border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: 13,
+        }}>
+          Search
+        </button>
       </div>
 
       {/* Quick Actions */}
@@ -68,7 +78,7 @@ export default function Header() {
         Tasks
       </button>
 
-      {/* Domestic */}
+      {/* B2B Surface */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: '0 12px',
         background: '#fff', border: '1px solid #d1d5db', borderRadius: 6, cursor: 'pointer',
@@ -77,8 +87,8 @@ export default function Header() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: '#1f2937', lineHeight: 1.2 }}>Domestic</div>
-          <div style={{ fontSize: 10, color: '#9ca3af', lineHeight: 1.2 }}>7b5a98-ManojFashions-do</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#1f2937', lineHeight: 1.2 }}>B2B Surface</div>
+          <div style={{ fontSize: 10, color: '#9ca3af', lineHeight: 1.2 }}>MANOJ FASHIONS 7504 B2B</div>
         </div>
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />

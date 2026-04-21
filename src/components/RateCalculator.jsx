@@ -55,6 +55,9 @@ export default function RateCalculator() {
           </svg>
           Learn More
         </button>
+        <div style={{ marginLeft: 'auto' }}>
+          <DownloadMenu />
+        </div>
       </div>
 
       {/* Two-column layout */}
@@ -465,13 +468,27 @@ export default function RateCalculator() {
               <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 fontSize: 14, fontWeight: 600, color: '#1f2937',
-                paddingTop: 10, borderTop: '1px solid #e5e7eb', marginTop: 4, marginBottom: 20,
+                paddingTop: 10, borderTop: '1px solid #e5e7eb', marginTop: 4, marginBottom: 12,
               }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                   GST at 18%
                   <InfoIcon tip="Goods and Services Tax at 18% on freight charges" />
                 </span>
                 <span>₹{gst.toLocaleString('en-IN')}</span>
+              </div>
+
+              {/* Return freight note */}
+              <div style={{
+                display: 'flex', gap: 8, padding: '9px 12px', marginBottom: 20,
+                background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8,
+                fontSize: 12, color: '#1d4ed8', lineHeight: 1.5,
+              }}>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: 1 }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>
+                  Freight charges for a <strong>returned shipment</strong> will be the same as forward freight charges.
+                </span>
               </div>
             </>
           )}
@@ -503,6 +520,127 @@ export default function RateCalculator() {
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+function DownloadMenu() {
+  const [open, setOpen] = useState(false)
+
+  const download = (filename, rows) => {
+    const csv = rows.map(r => r.join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(url)
+    setOpen(false)
+  }
+
+  const downloadRateCard = () => download('rate-card.ods', [
+    ['Route', 'Weight (kg)', 'Base Freight', 'Fuel Surcharge', 'Insurance ROV', 'Handling', 'Total (excl. GST)'],
+    ['641009 → 560025', '100', '850', '90', '150', '100', '1190'],
+  ])
+
+  const downloadPincodes = () => download('serviceable-pincodes.csv', [
+    ['Pincode', 'City', 'State', 'Serviceable'],
+    ['641009', 'Coimbatore', 'Tamil Nadu', 'Yes'],
+    ['560025', 'Bangalore', 'Karnataka', 'Yes'],
+    ['400001', 'Mumbai', 'Maharashtra', 'Yes'],
+    ['110001', 'New Delhi', 'Delhi', 'Yes'],
+    ['600001', 'Chennai', 'Tamil Nadu', 'Yes'],
+  ])
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <button
+        onClick={() => setOpen(v => !v)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px',
+          border: '1px solid #d1d5db', borderRadius: 6, background: '#fff',
+          fontSize: 13, color: '#374151', cursor: 'pointer', fontWeight: 500,
+          height: 34,
+        }}
+      >
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        Download
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.15s' }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <>
+          {/* backdrop to close on outside click */}
+          <div style={{ position: 'fixed', inset: 0, zIndex: 40 }} onClick={() => setOpen(false)} />
+          <div style={{
+            position: 'absolute', top: 'calc(100% + 6px)', right: 0,
+            background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.10)', minWidth: 230, zIndex: 50, overflow: 'hidden',
+          }}>
+            <div style={{ padding: '8px 14px 6px', fontSize: 11, fontWeight: 600, color: '#9ca3af', letterSpacing: '0.05em' }}>
+              DOWNLOAD
+            </div>
+
+            <button
+              onClick={downloadRateCard}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                padding: '10px 14px', background: 'none', border: 'none',
+                cursor: 'pointer', fontSize: 13, color: '#374151', textAlign: 'left',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}
+            >
+              <div style={{
+                width: 32, height: 32, borderRadius: 8, background: '#f0fdf4',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#16a34a" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontWeight: 500 }}>Rate Card</div>
+                <div style={{ fontSize: 11, color: '#9ca3af' }}>ODS spreadsheet</div>
+              </div>
+            </button>
+
+            <div style={{ height: 1, background: '#f3f4f6', margin: '0 14px' }} />
+
+            <button
+              onClick={downloadPincodes}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                padding: '10px 14px', background: 'none', border: 'none',
+                cursor: 'pointer', fontSize: 13, color: '#374151', textAlign: 'left',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}
+            >
+              <div style={{
+                width: 32, height: 32, borderRadius: 8, background: '#eff6ff',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#2563eb" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontWeight: 500 }}>Serviceable Pincodes</div>
+                <div style={{ fontSize: 11, color: '#9ca3af' }}>CSV format</div>
+              </div>
+            </button>
+            <div style={{ height: 8 }} />
+          </div>
+        </>
+      )}
     </div>
   )
 }
