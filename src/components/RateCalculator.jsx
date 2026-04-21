@@ -553,6 +553,15 @@ function DownloadMenu() {
     ['600001', 'Chennai', 'Tamil Nadu', 'Yes'],
   ])
 
+  const downloadNonServiceablePincodes = () => download('non-serviceable-pincodes.csv', [
+    ['Pincode', 'City', 'State', 'Reason'],
+    ['123456', 'Sample Town', 'Uttar Pradesh', 'Out of coverage area'],
+    ['234567', 'Remote Village', 'Himachal Pradesh', 'Out of coverage area'],
+    ['345678', 'Hill Station', 'Uttarakhand', 'Out of coverage area'],
+    ['456789', 'Border Town', 'Rajasthan', 'Restricted zone'],
+    ['567890', 'Island Area', 'Andaman & Nicobar', 'Out of coverage area'],
+  ])
+
   return (
     <div style={{ position: 'relative' }}>
       <button
@@ -634,6 +643,34 @@ function DownloadMenu() {
               </div>
               <div>
                 <div style={{ fontWeight: 500 }}>Serviceable Pincodes</div>
+                <div style={{ fontSize: 11, color: '#9ca3af' }}>CSV format</div>
+              </div>
+            </button>
+
+            <div style={{ height: 1, background: '#f3f4f6', margin: '0 14px' }} />
+
+            <button
+              onClick={downloadNonServiceablePincodes}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                padding: '10px 14px', background: 'none', border: 'none',
+                cursor: 'pointer', fontSize: 13, color: '#374151', textAlign: 'left',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}
+            >
+              <div style={{
+                width: 32, height: 32, borderRadius: 8, background: '#fef2f2',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#dc2626" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6" />
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontWeight: 500 }}>Non-Serviceable Pincodes</div>
                 <div style={{ fontSize: 11, color: '#9ca3af' }}>CSV format</div>
               </div>
             </button>
